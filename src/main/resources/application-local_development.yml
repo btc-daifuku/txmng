@@ -1,0 +1,21 @@
+spring:
+  profiles: local_development
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:5432/sample
+    username: sample_app
+    password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    initial-size: 1
+    max-active: 1
+    max-idle: 1
+    min-idle: 1
+    max-wait: 3000
+    jmx-enabled: true
+    test-on-borrow: true
+    validation-query: select 1
+
+server:
+  port: 18080
+  context-path: /sample
+  session:
+    timeout: 3600

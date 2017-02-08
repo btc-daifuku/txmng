@@ -1,0 +1,74 @@
+buildscript {
+	ext {
+		springBootVersion = '1.3.8.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'application'
+
+def app_basename = 'sample'
+
+
+jar {
+	baseName = "${app_basename}"
+	version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+// ====================================
+// Distribution
+// ====================================
+distZip {
+	baseName = "${app_basename}"
+	appendix = new Date().format("yyyyMMdd'T'HHmmss")
+}
+
+def conf = file("${buildDir}/conf")
+conf.mkdirs()
+if (project.hasProperty('env')) {
+	applicationDistribution.from("distributions/${env}/conf") {
+		into "conf"
+	}
+} else {
+	applicationDistribution.from("distributions/local_development/conf") {
+		into "conf"
+	}
+}
+
+// ====================================
+// Dependency
+// ====================================
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+
+	compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"
+
+	compile "org.springframework.boot:spring-boot-starter-logging:${springBootVersion}"
+//	compile "ch.qos.logback.contrib:logback-json-classic:0.1.5"
+//	compile "ch.qos.logback.contrib:logback-jackson:0.1.5"
+//	compile "com.fasterxml.jackson.core:jackson-core"
+//	compile "com.fasterxml.jackson.core:jackson-databind"
+
+	compile "org.springframework.boot:spring-boot-starter-jetty:${springBootVersion}"
+
+	// Manual
+	runtime "org.postgresql:postgresql:9.4-1206-jdbc42"
+	compile "org.apache.commons:commons-lang3:3.4"
+}

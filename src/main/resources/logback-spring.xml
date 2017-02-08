@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProfile name="local_development">
+        <property name="log_level" value="DEBUG"/>
+        <property name="mapper_log_level" value="DEBUG"/>
+        <property name="root_log_level" value="INFO"/>
+        <property name="env" value="local_development"/>
+        <property name="log_dir" value="log"/>
+        <property name="raw_log_name" value="app.log"/>
+        <!--<property name="fluentd_log_name" value="app_fluentd.log"/>-->
+    </springProfile>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} [%thread] %-5level %logger{5} \(%file:%line\) [${env}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_dir}/${raw_log_name}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/${raw_log_name}.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>14</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} [%thread] %-5level %logger{5} \(%file:%line\) [${env}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--<appender name="FILE_FLUENTD" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<file>${log_dir}/${fluentd_log_name}</file>-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>${log_dir}/${fluentd_log_name}.%d{yyyy-MM-dd}</fileNamePattern>-->
+            <!--<maxHistory>14</maxHistory>-->
+        <!--</rollingPolicy>-->
+        <!--<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">-->
+            <!--<layout class="ch.qos.logback.contrib.json.classic.JsonLayout">-->
+                <!--<jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">-->
+                    <!--<prettyPrint>false</prettyPrint>-->
+                <!--</jsonFormatter>-->
+                <!--<timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SSSXXX</timestampFormat>-->
+                <!--<timestampFormatTimezoneId>Asia/Tokyo</timestampFormatTimezoneId>-->
+                <!--<includeContextName>false</includeContextName>-->
+                <!--<appendLineSeparator>true</appendLineSeparator>-->
+            <!--</layout>-->
+            <!--<charset>UTF-8</charset>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
+    <logger name="com.example" level="${log_level}">
+        <appender-ref ref="FILE" />
+        <!--<appender-ref ref="FILE_FLUENTD" />-->
+    </logger>
+
+    <logger name="com.example.mapper" additivity="false" level="${mapper_log_level}">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <root level="${root_log_level}">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+        <!--<appender-ref ref="FILE_FLUENTD" />-->
+    </root>
+
+</configuration>

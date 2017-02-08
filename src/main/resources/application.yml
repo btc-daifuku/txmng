@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    default: local_development
+    active: local_development
+
+mybatis:
+  mapper-locations: classpath:com/example/mybatis/*.xml
+  executor-type: REUSE
+
+security:
+  basic:
+    enabled: false

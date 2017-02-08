@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SampleMapper">
+
+    <resultMap id="SampleResultMap" type="com.example.model.Sample">
+        <id property="id" column="id"/>
+        <result property="val" column="val"/>
+    </resultMap>
+
+    <select id="getById" resultMap="SampleResultMap">
+        <![CDATA[
+        select
+            *
+        from
+            sample
+        where
+            id = #{id}
+        ]]>
+    </select>
+
+    <insert id="insert" parameterType="com.example.model.Sample">
+        <![CDATA[
+        insert into sample (
+            id,
+            val
+        ) values (
+            #{sample.id},
+            #{sample.val}
+        )
+        ]]>
+    </insert>
+
+    <update id="update" parameterType="com.example.model.Sample">
+        <![CDATA[
+        update
+            sample
+        set
+            val = #{sample.val}
+        where
+            id = #{sample.id}
+        ]]>
+    </update>
+
+    <delete id="deleteById">
+        <![CDATA[
+        delete from
+            refer
+        where
+            id = #{id}
+        ]]>
+    </delete>
+</mapper>
